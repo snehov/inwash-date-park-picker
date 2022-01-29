@@ -2,6 +2,10 @@
   font-family: sans-serif;
   text-align: center;
 }
+.react-datepicker-wrapper {
+  display: inline-block;
+  width: 130px;
+}
 .react-datepicker__input-container > input {
   border: 1px solid blue;
   padding: 5px 16px;

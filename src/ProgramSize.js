@@ -24,14 +24,12 @@ export const ProgramSize = ({ currentSize, changeSize }) => {
     changeSize(newSize);
   };
   return (
-    <div>
-      <select value={selectedSize} onChange={internalChangeSize}>
-        {sizes.map((sizes) => (
-          <option key={sizes.ident} value={sizes.id}>
-            {sizes.name_cz}
-          </option>
-        ))}
-      </select>
-    </div>
+    <select value={selectedSize} onChange={internalChangeSize}>
+      {sizes.map((sizes) => (
+        <option key={sizes.ident} value={sizes.id}>
+          {sizes.name_cz}
+        </option>
+      ))}
+    </select>
   );
 };

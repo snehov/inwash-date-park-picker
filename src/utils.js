@@ -57,3 +57,7 @@ export function moneyFormat(value) {
   }
   return withFixes;
 }
+
+export function isDate(x) {
+  return x instanceof Date && !isNaN(x);
+}

@@ -3,19 +3,20 @@ import { useState } from "react";
 import { DatePick } from "./DatePick";
 import { ProgramSize } from "./ProgramSize";
 import { differenceInMinutes } from "date-fns";
+import { Input } from "./Input";
 import data from "./data.json";
-import { getProgramFromDays, moneyFormat } from "./utils";
+import { getProgramFromDays, moneyFormat, isDate } from "./utils";
 const EXTRA_DAY_PARK = 130;
 
 export default function App() {
   const [daysCalc, setDaysCalc] = useState();
   const [chosenProgram, setChosenProgram] = useState(null);
   const [programSize, setProgramSize] = useState(0);
+  const [vrp, setVrp] = useState("");
 
   const recountDate = ({ startDate, endDate }) => {
-    //its not proper NaN date validation
-    if (Number.isNaN(startDate) || Number.isNaN(endDate)) {
-      console.log("neplatny datum");
+    if (!isDate(startDate) || !isDate(endDate)) {
+      console.error("neplatny datum");
       return;
     }
     const minutes = differenceInMinutes(endDate, startDate);
@@ -36,17 +37,30 @@ export default function App() {
 
   return (
     <div className="App">
-      <h1>Vybírač progarmu</h1>
-      Velikost:
-      <br />
-      <ProgramSize currentSize={programSize} changeSize={changeSize} />
-      (tzn:{programSize})<p>Počet dní: {daysCalc}</p>
-      {chosenProgram !== null && (
-        <div>
-          {chosenProgram.name} za {moneyFormat(getSizePrice())} Kč
-        </div>
-      )}
-      <DatePick updateDate={recountDate} />
+      <h1> {chosenProgram && chosenProgram.name}</h1>
+      <p>
+        Velikost:{" "}
+        <ProgramSize currentSize={programSize} changeSize={changeSize} />
+      </p>
+      <div>
+        Vyberte rozmezí parkování:
+        <br />
+        <DatePick updateDate={recountDate} />
+      </div>
+      <div>Počet dní: {daysCalc}</div>
+      <p>
+        SPZ:{" "}
+        <Input
+          onChange={setVrp}
+          value={vrp}
+          maxLength={8}
+          onlyUppercase
+          avoidSpaces
+        />
+      </p>
+      <p>
+        Finální cena <b>{chosenProgram && moneyFormat(getSizePrice())} Kč</b>
+      </p>
     </div>
   );
 }
