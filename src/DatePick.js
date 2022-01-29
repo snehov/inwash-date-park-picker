@@ -7,11 +7,17 @@ import DatePicker, {
 import { setDateFromNow } from "./utils";
 import "react-datepicker/dist/react-datepicker.css";
 import cs from "date-fns/locale/cs";
-import { format } from "date-fns";
+import { format, getDate, addDays, isAfter } from "date-fns";
+import excludeDatesList from "./excludeDates.json";
+const excludeDates = Array.isArray(excludeDatesList)
+  ? excludeDatesList.map((date) => new Date(date))
+  : [];
+
 registerLocale("cs", cs);
 setDefaultLocale("cs");
 
 const dateFormat = "dd.MM.yyyy HH:mm";
+const dateJsonFormat = "yyyy-MM-dd";
 
 export const DatePick = ({ updateDate }) => {
   const [startDate, setStartDate] = useState(setDateFromNow(1, 8));
@@ -35,6 +41,10 @@ export const DatePick = ({ updateDate }) => {
   const updateStartDate = (date) => {
     setStartDate(date);
     setIsStartOpen(false);
+
+    if (isAfter(date, endDate)) {
+      setEndDate(addDays(date, 1));
+    }
   };
   const updateEndDate = (date) => {
     setEndDate(date);
@@ -47,6 +57,18 @@ export const DatePick = ({ updateDate }) => {
         <div style={{ background: "#f0f0f0" }}>Vyberte datum, čas příjezdu</div>
         <div style={{ position: "relative" }}>{children}</div>
       </CalendarContainer>
+    );
+  };
+
+  const renderDayContents = (day, date) => {
+    const tooltipText = `Tento den již máme plno`;
+
+    return excludeDatesList.includes(format(date, dateJsonFormat)) ? (
+      <span title={tooltipText} style={{ color: "red" }}>
+        {getDate(date)}
+      </span>
+    ) : (
+      <span>{getDate(date)}</span>
     );
   };
 
@@ -66,6 +88,8 @@ export const DatePick = ({ updateDate }) => {
           calendarContainer={MyContainer}
           inline
           onClickOutside={() => setIsStartOpen(false)}
+          excludeDates={excludeDates}
+          renderDayContents={renderDayContents}
         />
       )}
       <br />

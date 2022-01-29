@@ -22,7 +22,7 @@ export default function App() {
     const minutes = differenceInMinutes(endDate, startDate);
     const days = Math.ceil(minutes / 1440);
     const matchedProgram = getProgramFromDays(data, days, EXTRA_DAY_PARK);
-    console.log("Program>>>", matchedProgram);
+
     setChosenProgram(matchedProgram);
     setDaysCalc(days);
   };
