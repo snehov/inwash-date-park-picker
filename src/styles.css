@@ -1,0 +1,9 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+.react-datepicker__input-container > input {
+  border: 1px solid blue;
+  padding: 5px 16px;
+  margin: 5px;
+}
