@@ -18,12 +18,13 @@ export const sizes = [
 ];
 
 export const defaultSize = sizes.find((f) => f.default === true).ident;
+console.log("defaultSize>>", defaultSize);
 
 export const ProgramSize = ({ currentSize, changeSize }) => {
   const [selectedSize, setSelectedSize] = useState(currentSize);
 
   const internalChangeSize = (e) => {
-    const newSize = Number(e.target.value);
+    const newSize = e.target.value;
     setSelectedSize(newSize);
     changeSize(newSize);
   };

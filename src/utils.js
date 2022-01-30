@@ -1,4 +1,11 @@
 import { addDays, setHours, setMinutes, setSeconds } from "date-fns";
+import excludeDatesList from "./excludeDates.json";
+
+export const excludeDatesArray = excludeDatesList;
+
+export const excludeDates = Array.isArray(excludeDatesList)
+  ? excludeDatesList.map((date) => new Date(date))
+  : [];
 
 export function setDateFromNow(inDays, atHour) {
   return setSeconds(

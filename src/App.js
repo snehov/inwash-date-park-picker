@@ -1,13 +1,22 @@
-import "./styles.css";
-import data from "./data.json";
+import { useState } from "react";
+import { differenceInMinutes } from "date-fns";
+import { registerLocale, setDefaultLocale } from "react-datepicker";
 import { getProgramFromDays, moneyFormat, isDate } from "./utils";
 import { ProgramSize, defaultSize } from "./ProgramSize";
-import { useState } from "react";
+import { DateRangePick } from "./DateRangePick";
 import { DatePick } from "./DatePick";
-import { differenceInMinutes } from "date-fns";
 import { Input } from "./Input";
 import { EXTRA_DAY_PARK } from "./variables";
 import { sendOrder } from "./sendOrder";
+
+import "./styles.css";
+import cs from "date-fns/locale/cs";
+import programData from "./data.json";
+
+registerLocale("cs", cs);
+setDefaultLocale("cs");
+
+const is_parking = false;
 
 export default function App() {
   const [daysCalc, setDaysCalc] = useState();
@@ -20,7 +29,7 @@ export default function App() {
     endDate: null
   });
 
-  const recountDate = ({ startDate, endDate }) => {
+  const recountDateRange = ({ startDate, endDate }) => {
     if (!isDate(startDate) || !isDate(endDate)) {
       console.error("neplatny datum");
       return;
@@ -28,11 +37,29 @@ export default function App() {
 
     const minutes = differenceInMinutes(endDate, startDate);
     const days = Math.ceil(minutes / 1440);
-    const matchedProgram = getProgramFromDays(data, days, EXTRA_DAY_PARK);
+    const matchedProgram = getProgramFromDays(
+      programData,
+      days,
+      EXTRA_DAY_PARK
+    );
 
     setDateRange({ startDate, endDate });
     setChosenProgram(matchedProgram);
     setDaysCalc(days);
+  };
+
+  const recountDate = ({ startDate, endDate }) => {
+    if (!isDate(startDate)) {
+      console.error("neplatny datum");
+      return;
+    }
+
+    const matchedProgram = Array.isArray(programData)
+      ? programData[0]
+      : programData;
+    setDateRange({ startDate, endDate });
+    setChosenProgram(matchedProgram);
+    setDaysCalc(1);
   };
 
   const changeSize = (newSize) => {
@@ -40,7 +67,9 @@ export default function App() {
   };
 
   const getSizePrice = () => {
-    return programSize === 0 ? chosenProgram.price : chosenProgram.price_xl;
+    return programSize == "standard"
+      ? chosenProgram.price
+      : chosenProgram.price_xl;
   };
 
   const handleSubmitOrder = () => {
@@ -65,6 +94,7 @@ export default function App() {
         setError(err);
       });
   };
+
   return (
     <div className="App">
       <h1> {chosenProgram && chosenProgram.name}</h1>
@@ -72,12 +102,22 @@ export default function App() {
         Velikost:{" "}
         <ProgramSize currentSize={programSize} changeSize={changeSize} />
       </p>
-      <div>
-        Vyberte rozmezí parkování:
-        <br />
-        <DatePick updateDate={recountDate} />
-      </div>
-      <div>Počet dní: {daysCalc}</div>
+      {is_parking ? (
+        <>
+          <div>
+            Vyberte rozmezí parkování:
+            <br />
+            <DateRangePick updateDate={recountDateRange} />
+          </div>
+          <div>Počet dní: {daysCalc}</div>
+        </>
+      ) : (
+        <div>
+          Datum přijetí vozu:
+          <br />
+          <DatePick updateDate={recountDate} />
+        </div>
+      )}
       <p>
         SPZ:{" "}
         <Input

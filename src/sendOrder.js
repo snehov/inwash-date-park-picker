@@ -11,10 +11,9 @@ export const sendOrder = async ({
 }) => {
   const data = {
     product_id: productId,
-    variant: `${format(from, variantDateFormat)} - ${format(
-      to,
-      variantDateFormat
-    )}`,
+    variant: `${format(from, variantDateFormat)}${
+      to === null ? "" : ` - ${format(to, variantDateFormat)}`
+    }`,
     variant2: size,
     spz: vrp,
     //dateFrom: from,
