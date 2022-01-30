@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { differenceInMinutes } from "date-fns";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
-import { getProgramFromDays, moneyFormat, isDate } from "./utils";
+import {
+  getProgramFromDays,
+  moneyFormat,
+  isDate,
+  getProgramData
+} from "./utils";
 import { ProgramSize, defaultSize } from "./ProgramSize";
 import { DateRangePick } from "./DateRangePick";
 import { DatePick } from "./DatePick";
@@ -11,12 +16,13 @@ import { sendOrder } from "./sendOrder";
 
 import "./styles.css";
 import cs from "date-fns/locale/cs";
-import programData from "./data.json";
+import { ProgramSizeImage } from "./ProgramSizeImage";
 
 registerLocale("cs", cs);
 setDefaultLocale("cs");
 
 const is_parking = false;
+const programData = getProgramData();
 
 export default function App() {
   const [daysCalc, setDaysCalc] = useState();
@@ -98,10 +104,11 @@ export default function App() {
   return (
     <div className="App">
       <h1> {chosenProgram && chosenProgram.name}</h1>
-      <p>
+      <div style={{ width: "333px" }}>
         Velikost:{" "}
-        <ProgramSize currentSize={programSize} changeSize={changeSize} />
-      </p>
+        {/* <ProgramSize currentSize={programSize} changeSize={changeSize} /> */}
+        <ProgramSizeImage currentSize={programSize} changeSize={changeSize} />
+      </div>
       {is_parking ? (
         <>
           <div>

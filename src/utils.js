@@ -1,4 +1,5 @@
 import { addDays, setHours, setMinutes, setSeconds } from "date-fns";
+import programData from "./data.json";
 import excludeDatesList from "./excludeDates.json";
 
 export const excludeDatesArray = excludeDatesList;
@@ -6,6 +7,17 @@ export const excludeDatesArray = excludeDatesList;
 export const excludeDates = Array.isArray(excludeDatesList)
   ? excludeDatesList.map((date) => new Date(date))
   : [];
+
+export const getProgramData = () => {
+  console.log("window.APP_DATA", typeof window.APP_DATA, window.APP_DATA);
+  return typeof window.APP_DATA === "object"
+    ? window.APP_DATA.program
+    : programData;
+
+  /*  return typeof programData === "object"
+    ? programData
+    : window.APP_DATA?.program; */
+};
 
 export function setDateFromNow(inDays, atHour) {
   return setSeconds(
