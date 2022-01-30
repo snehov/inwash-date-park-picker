@@ -19,6 +19,16 @@ export const getProgramData = () => {
     : window.APP_DATA?.program; */
 };
 
+export const checkIsParking = (programData) => {
+  if (Array.isArray(programData)) {
+    return Boolean(programData[0].is_parking == "1"); //eslint-disable-line eqeqeq
+  }
+  if (typeof programData === "object") {
+    return Boolean(programData.is_parking == "1"); //eslint-disable-line eqeqeq
+  }
+  return false;
+};
+
 export function setDateFromNow(inDays, atHour) {
   return setSeconds(
     setMinutes(setHours(addDays(new Date(), inDays), atHour), 0),
@@ -81,3 +91,24 @@ export function moneyFormat(value) {
 export function isDate(x) {
   return x instanceof Date && !isNaN(x);
 }
+
+export const getProgramDesription = (chosenProgram) => {
+  if (chosenProgram === null) {
+    return ["..."];
+  }
+  if (typeof chosenProgram.description === "object") {
+    return chosenProgram.description;
+  }
+  if (
+    typeof chosenProgram.description === "string" &&
+    chosenProgram.description.substring(0, 1) === "["
+  ) {
+    let programList = [];
+    try {
+      programList = JSON.parse(chosenProgram.description);
+    } catch (err) {
+      return [""];
+    }
+    return programList;
+  }
+};

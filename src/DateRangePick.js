@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import { format, addDays, isAfter } from "date-fns";
 import { setDateFromNow, excludeDates } from "./utils";
 import { dateFormat } from "./variables";
-import { RenderCustomDayLabel, DateFromCustomWrapper } from "./DateComponents";
+import { RenderCustomDayLabel, DateFromCustomWrapper } from "./DateExtensions";
 import "react-datepicker/dist/react-datepicker.css";
 
 export const DateRangePick = ({ updateDate }) => {
@@ -40,42 +40,48 @@ export const DateRangePick = ({ updateDate }) => {
 
   return (
     <React.Fragment>
-      Od:
-      <button onClick={toggleStart}>{format(startDate, dateFormat)}</button>
-      {isStartOpen && (
-        <DatePicker
-          selected={startDate}
-          onChange={(date) => updateStartDate(date)}
-          selectsStart
-          startDate={startDate}
-          endDate={endDate}
-          showTimeSelect
-          dateFormat={dateFormat}
-          calendarContainer={DateFromCustomWrapper}
-          inline
-          onClickOutside={() => setIsStartOpen(false)}
-          excludeDates={excludeDates}
-          renderDayContents={RenderCustomDayLabel}
-        />
-      )}
+      <div className="startDate">
+        Od:
+        <button onClick={toggleStart}>{format(startDate, dateFormat)}</button>
+        <br />
+        {isStartOpen && (
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => updateStartDate(date)}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+            showTimeSelect
+            dateFormat={dateFormat}
+            calendarContainer={DateFromCustomWrapper}
+            inline
+            onClickOutside={() => setIsStartOpen(false)}
+            excludeDates={excludeDates}
+            renderDayContents={RenderCustomDayLabel}
+            minDate={new Date()}
+          />
+        )}
+      </div>
       <br />
-      <br />
-      Do:
-      <button onClick={toggleEnd}>{format(endDate, dateFormat)}</button>
-      {isEndOpen && (
-        <DatePicker
-          selected={endDate}
-          onChange={(date) => updateEndDate(date)}
-          selectsEnd
-          startDate={startDate}
-          endDate={endDate}
-          minDate={startDate}
-          showTimeSelect
-          dateFormat={dateFormat}
-          inline
-          onClickOutside={() => setIsEndOpen(false)}
-        />
-      )}
+      <div className="endDate">
+        Do:
+        <button onClick={toggleEnd}>{format(endDate, dateFormat)}</button>
+        <br />
+        {isEndOpen && (
+          <DatePicker
+            selected={endDate}
+            onChange={(date) => updateEndDate(date)}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            minDate={startDate}
+            showTimeSelect
+            dateFormat={dateFormat}
+            inline
+            onClickOutside={() => setIsEndOpen(false)}
+          />
+        )}
+      </div>
     </React.Fragment>
   );
 };

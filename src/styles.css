@@ -1,6 +1,5 @@
 .App {
   font-family: sans-serif;
-  text-align: center;
 }
 .react-datepicker-wrapper {
   display: inline-block;
@@ -10,4 +9,8 @@
   border: 1px solid blue;
   padding: 5px 16px;
   margin: 5px;
+}
+.startDate > div,
+.endDate > div {
+  display: inline-block;
 }

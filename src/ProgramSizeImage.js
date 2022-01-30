@@ -1,23 +1,6 @@
 import { useState, useRef, useMemo } from "react";
 import Select from "react-select";
-
-export const sizes = [
-  {
-    id: 0,
-    ident: "standard",
-    postfix: "",
-    name_cz: "Standardní",
-    name_en: "Standard",
-    default: true
-  },
-  {
-    id: 1,
-    ident: "XL",
-    postfix: "_xl",
-    name_cz: "XL (SUV, MPV, Užitkové)",
-    name_en: "XL (SUV, MPV, Utility)"
-  }
-];
+import { sizes } from "./lists";
 
 const options = sizes.map((size) => {
   return {
@@ -43,11 +26,11 @@ export const ProgramSizeImage = ({ currentSize, changeSize }) => {
   const defaultOption = options.find((f) => f.value === currentSize);
 
   const internalChangeSize = (newSize) => {
-    console.log("new size ", newSize);
+    //console.log("new size ", newSize);
     changeSize(newSize.value);
   };
 
-  console.log("defaultOption>>", defaultOption, "options", options);
+  //console.log("defaultOption>>", defaultOption, "options", options);
 
   return (
     <Select

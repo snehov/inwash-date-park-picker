@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { differenceInMinutes } from "date-fns";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import {
   getProgramFromDays,
   moneyFormat,
   isDate,
-  getProgramData
+  getProgramData,
+  getProgramDesription,
+  checkIsParking
 } from "./utils";
-import { ProgramSize, defaultSize } from "./ProgramSize";
+import { defaultSize } from "./ProgramSize";
 import { DateRangePick } from "./DateRangePick";
 import { DatePick } from "./DatePick";
 import { Input } from "./Input";
@@ -21,8 +23,8 @@ import { ProgramSizeImage } from "./ProgramSizeImage";
 registerLocale("cs", cs);
 setDefaultLocale("cs");
 
-const is_parking = false;
 const programData = getProgramData();
+const is_parking = checkIsParking(programData);
 
 export default function App() {
   const [daysCalc, setDaysCalc] = useState();
@@ -59,7 +61,6 @@ export default function App() {
       console.error("neplatny datum");
       return;
     }
-
     const matchedProgram = Array.isArray(programData)
       ? programData[0]
       : programData;
@@ -73,7 +74,7 @@ export default function App() {
   };
 
   const getSizePrice = () => {
-    return programSize == "standard"
+    return programSize === "standard"
       ? chosenProgram.price
       : chosenProgram.price_xl;
   };
@@ -101,11 +102,25 @@ export default function App() {
       });
   };
 
+  const programDescription = useMemo(
+    () => getProgramDesription(chosenProgram),
+    [chosenProgram]
+  );
+
   return (
     <div className="App">
-      <h1> {chosenProgram && chosenProgram.name}</h1>
+      {chosenProgram && (
+        <>
+          <h1>{chosenProgram.name}</h1>
+          <ul>
+            {programDescription.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </>
+      )}
       <div style={{ width: "333px" }}>
-        Velikost:{" "}
+        Velikost vozu:{" "}
         {/* <ProgramSize currentSize={programSize} changeSize={changeSize} /> */}
         <ProgramSizeImage currentSize={programSize} changeSize={changeSize} />
       </div>

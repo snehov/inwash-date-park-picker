@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import { format } from "date-fns";
 import { setDateFromNow, excludeDates } from "./utils";
 import { dateFormat } from "./variables";
-import { RenderCustomDayLabel, DateFromCustomWrapper } from "./DateComponents";
+import { RenderCustomDayLabel, DateFromCustomWrapper } from "./DateExtensions";
 import "react-datepicker/dist/react-datepicker.css";
 
 export const DatePick = ({ updateDate }) => {
@@ -25,8 +25,9 @@ export const DatePick = ({ updateDate }) => {
   };
 
   return (
-    <React.Fragment>
+    <div className="startDate">
       <button onClick={toggleStart}>{format(startDate, dateFormat)}</button>
+      <br />
       {isStartOpen && (
         <DatePicker
           selected={startDate}
@@ -40,8 +41,9 @@ export const DatePick = ({ updateDate }) => {
           onClickOutside={() => setIsStartOpen(false)}
           excludeDates={excludeDates}
           renderDayContents={RenderCustomDayLabel}
+          minDate={new Date()}
         />
       )}
-    </React.Fragment>
+    </div>
   );
 };
