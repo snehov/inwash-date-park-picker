@@ -1,13 +1,27 @@
-export const sendOrder = ({ from, to, vrn, productId, size }) => {
+import { format } from "date-fns";
+import { variantDateFormat } from "./variables";
+
+export const sendOrder = async ({
+  from,
+  to,
+  vrp,
+  productId,
+  size,
+  daysOver
+}) => {
   const data = {
     product_id: productId,
-    variant: `${from} - ${to}`,
+    variant: `${format(from, variantDateFormat)} - ${format(
+      to,
+      variantDateFormat
+    )}`,
     variant2: size,
-    spz: vrn,
-
-    dateFrom: from,
-    dateTo: to
+    spz: vrp,
+    //dateFrom: from,
+    //dateTo: to,
+    daysOver: daysOver
   };
+  console.log("DATA", data);
   fetch("https://inwash.cz/shop/cart_api/addToCart", {
     method: "POST", // or 'PUT'
     headers: {
@@ -25,7 +39,7 @@ export const sendOrder = ({ from, to, vrn, productId, size }) => {
       }
     })
     .catch((error) => {
-      console.error("Error:", error);
+      console.error("Error?:", error);
     });
 };
 

@@ -1,3 +1,6 @@
+import cs from "date-fns/locale/cs";
+import "react-datepicker/dist/react-datepicker.css";
+
 import React, { useEffect, useState } from "react";
 import DatePicker, {
   registerLocale,
@@ -5,9 +8,8 @@ import DatePicker, {
   CalendarContainer
 } from "react-datepicker";
 import { setDateFromNow } from "./utils";
-import "react-datepicker/dist/react-datepicker.css";
-import cs from "date-fns/locale/cs";
 import { format, getDate, addDays, isAfter } from "date-fns";
+import { dateFormat, dateJsonFormat } from "./variables";
 import excludeDatesList from "./excludeDates.json";
 const excludeDates = Array.isArray(excludeDatesList)
   ? excludeDatesList.map((date) => new Date(date))
@@ -15,9 +17,6 @@ const excludeDates = Array.isArray(excludeDatesList)
 
 registerLocale("cs", cs);
 setDefaultLocale("cs");
-
-const dateFormat = "dd.MM.yyyy HH:mm";
-const dateJsonFormat = "yyyy-MM-dd";
 
 export const DatePick = ({ updateDate }) => {
   const [startDate, setStartDate] = useState(setDateFromNow(1, 8));

@@ -17,6 +17,7 @@ export function modifyProgramByExtraDays(
   modifiedProgram.price = Number(origProgram.price) + addedPrice;
   modifiedProgram.price_xl = Number(origProgram.price_xl) + addedPrice;
   modifiedProgram.name = `${origProgram.name} + extra dny (${addExtraDays})`;
+  modifiedProgram.extraDays = addExtraDays;
   return modifiedProgram;
 }
 

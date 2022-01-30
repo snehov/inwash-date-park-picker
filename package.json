@@ -1,11 +1,8 @@
 {
-  "name": "react",
+  "name": "inwash-date-park-picker",
   "version": "1.0.0",
-  "description": "React example starter project",
-  "keywords": [
-    "react",
-    "starter"
-  ],
+  "description": "",
+  "keywords": [],
   "main": "src/index.js",
   "dependencies": {
     "date-fns": "2.28.0",
