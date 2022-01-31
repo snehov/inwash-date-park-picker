@@ -12,7 +12,7 @@ export const DatePick = ({ updateDate }) => {
 
   useEffect(() => {
     updateDate({ startDate });
-  }, [startDate]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [startDate]);
 
   const toggleStart = (e) => {
     e.preventDefault();
@@ -26,7 +26,9 @@ export const DatePick = ({ updateDate }) => {
 
   return (
     <div className="startDate">
-      <button onClick={toggleStart}>{format(startDate, dateFormat)}</button>
+      <button onClick={toggleStart} className="uneditable-input datePickButton">
+        {format(startDate, dateFormat)}
+      </button>
       <br />
       {isStartOpen && (
         <DatePicker

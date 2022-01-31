@@ -10,7 +10,33 @@
   padding: 5px 16px;
   margin: 5px;
 }
+.startDate,
+.endDate {
+  margin: 5px 0;
+}
 .startDate > div,
 .endDate > div {
   display: inline-block;
+}
+.datePickButton {
+  margin: 3px;
+  padding: 5px 15px;
+}
+.upperLabel {
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+.important {
+  font-weight: bold;
+  margin: 10px 0;
+}
+label {
+  display: inline-block;
+  width: 44px;
+}
+.errorLabel {
+  color: red;
+  font-weight: bold;
 }

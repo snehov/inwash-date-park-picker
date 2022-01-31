@@ -112,7 +112,8 @@ export default function App() {
       {chosenProgram && (
         <>
           <h1>{chosenProgram.name}</h1>
-          <ul>
+
+          <ul className="offerBox__items">
             {programDescription.map((item) => (
               <li key={item}>{item}</li>
             ))}
@@ -120,18 +121,19 @@ export default function App() {
         </>
       )}
       <div style={{ width: "333px" }}>
-        Velikost vozu:{" "}
+        <div className="upperLabel">Velikost vozu:</div>
         {/* <ProgramSize currentSize={programSize} changeSize={changeSize} /> */}
         <ProgramSizeImage currentSize={programSize} changeSize={changeSize} />
       </div>
       {is_parking ? (
         <>
           <div>
-            Vyberte rozmezí parkování:
-            <br />
+            <div className="upperLabel">Vyberte rozmezí parkování:</div>
             <DateRangePick updateDate={recountDateRange} />
           </div>
-          <div>Počet dní: {daysCalc}</div>
+          <div className="important">
+            <label></label>počet dní: {daysCalc}
+          </div>
         </>
       ) : (
         <div>
@@ -141,7 +143,7 @@ export default function App() {
         </div>
       )}
       <p>
-        SPZ:{" "}
+        <label>SPZ:</label>
         <Input
           onChange={setVrp}
           value={vrp}
@@ -150,11 +152,18 @@ export default function App() {
           avoidSpaces
         />
       </p>
-      <p>
+
+      <div className="important">
         Finální cena <b>{chosenProgram && moneyFormat(getSizePrice())} Kč</b>
-      </p>
-      {error !== "" && <p>{error}</p>}
-      <button onClick={handleSubmitOrder}>Objednat</button>
+      </div>
+
+      {error !== "" && <p className="errorLabel">{error}</p>}
+      <button
+        onClick={handleSubmitOrder}
+        className="actionButton button offerBox__reserve"
+      >
+        Objednat
+      </button>
     </div>
   );
 }

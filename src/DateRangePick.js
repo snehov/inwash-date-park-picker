@@ -14,7 +14,7 @@ export const DateRangePick = ({ updateDate }) => {
 
   useEffect(() => {
     updateDate({ startDate, endDate });
-  }, [startDate, endDate]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [startDate, endDate]);
 
   const toggleStart = (e) => {
     e.preventDefault();
@@ -41,8 +41,13 @@ export const DateRangePick = ({ updateDate }) => {
   return (
     <React.Fragment>
       <div className="startDate">
-        Od:
-        <button onClick={toggleStart}>{format(startDate, dateFormat)}</button>
+        <label>Od:</label>
+        <button
+          onClick={toggleStart}
+          className="uneditable-input datePickButton"
+        >
+          {format(startDate, dateFormat)}
+        </button>
         <br />
         {isStartOpen && (
           <DatePicker
@@ -62,10 +67,12 @@ export const DateRangePick = ({ updateDate }) => {
           />
         )}
       </div>
-      <br />
+
       <div className="endDate">
-        Do:
-        <button onClick={toggleEnd}>{format(endDate, dateFormat)}</button>
+        <label>Do:</label>
+        <button onClick={toggleEnd} className="uneditable-input datePickButton">
+          {format(endDate, dateFormat)}
+        </button>
         <br />
         {isEndOpen && (
           <DatePicker
