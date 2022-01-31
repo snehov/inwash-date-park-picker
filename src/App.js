@@ -109,6 +109,7 @@ export default function App() {
     () => getProgramDesription(chosenProgram),
     [chosenProgram]
   );
+  console.log("programDescription", programDescription, chosenProgram);
 
   return (
     <div className="App">

@@ -1,22 +1,21 @@
 import { addDays, setHours, setMinutes, setSeconds } from "date-fns";
-import programData from "./data.json";
-import excludeDatesList from "../public/excludeDates.json";
+import programData from "./data.json"; //TODO: remove before going to production
 
-export const excludeDatesArray = excludeDatesList;
+export const excludeDatesArray =
+  typeof window.APP_DATA === "object" &&
+  Array.isArray(window.APP_DATA.excludeDates)
+    ? window.APP_DATA.excludeDates
+    : [];
 
-export const excludeDates = Array.isArray(excludeDatesList)
-  ? excludeDatesList.map((date) => new Date(date))
+export const excludeDates = Array.isArray(excludeDatesArray)
+  ? excludeDatesArray.map((date) => new Date(date))
   : [];
 
 export const getProgramData = () => {
-  console.log("window.APP_DATA", typeof window.APP_DATA, window.APP_DATA);
-  return typeof window.APP_DATA === "object"
+  return typeof window.APP_DATA === "object" &&
+    window.APP_DATA.program === "object"
     ? window.APP_DATA.program
     : programData;
-
-  /*  return typeof programData === "object"
-    ? programData
-    : window.APP_DATA?.program; */
 };
 
 export const checkIsParking = (programData) => {
