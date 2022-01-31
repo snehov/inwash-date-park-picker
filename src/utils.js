@@ -1,6 +1,6 @@
 import { addDays, setHours, setMinutes, setSeconds } from "date-fns";
 import programData from "./data.json";
-import excludeDatesList from "./excludeDates.json";
+import excludeDatesList from "../public/excludeDates.json";
 
 export const excludeDatesArray = excludeDatesList;
 
