@@ -82,7 +82,7 @@ export default function App() {
 
   const handleSubmitOrder = () => {
     if (vrp === "") {
-      setError([...errors, { ident: "vrp", label: "Není zadaní SPZ" }]);
+      setError([...errors, { ident: "vrp", label: "Není zadaná SPZ" }]);
       return false;
     }
     setIsSending(true);
