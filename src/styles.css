@@ -33,10 +33,14 @@
   margin: 10px 0;
 }
 label {
+  font-weight: bold;
   display: inline-block;
   width: 44px;
 }
 .errorLabel {
   color: red;
   font-weight: bold;
+}
+h1 {
+  font-size: 25px;
 }

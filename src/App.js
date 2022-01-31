@@ -31,7 +31,8 @@ export default function App() {
   const [chosenProgram, setChosenProgram] = useState(null);
   const [programSize, setProgramSize] = useState(defaultSize);
   const [vrp, setVrp] = useState("");
-  const [error, setError] = useState("");
+  const [errors, setError] = useState([]);
+  const [isSending, setIsSending] = useState(false);
   const [dateRange, setDateRange] = useState({
     startDate: null,
     endDate: null
@@ -81,10 +82,11 @@ export default function App() {
 
   const handleSubmitOrder = () => {
     if (vrp === "") {
-      setError("Není zadaná SPZ");
+      setError([...errors, { ident: "vrp", label: "Není zadaní SPZ" }]);
       return false;
     }
-    setError("");
+    setIsSending(true);
+    setError([]);
     const data = {
       from: dateRange.startDate,
       to: dateRange.endDate,
@@ -95,11 +97,12 @@ export default function App() {
     };
     sendOrder(data)
       .then((res) => {
-        setError("");
+        setError([]);
       })
       .catch((err) => {
-        setError(err);
-      });
+        setError([{ ident: "sendErr", label: err }]);
+      })
+      .finally(() => setIsSending(false));
   };
 
   const programDescription = useMemo(
@@ -150,6 +153,7 @@ export default function App() {
           maxLength={8}
           onlyUppercase
           avoidSpaces
+          className={errors.find((f) => f.ident === "vrp") ? "alert" : ""}
         />
       </p>
 
@@ -157,12 +161,15 @@ export default function App() {
         Finální cena <b>{chosenProgram && moneyFormat(getSizePrice())} Kč</b>
       </div>
 
-      {error !== "" && <p className="errorLabel">{error}</p>}
+      {errors.length > 0 && (
+        <p className="errorLabel">{errors.map((error) => error.label)}</p>
+      )}
       <button
         onClick={handleSubmitOrder}
         className="actionButton button offerBox__reserve"
+        disabled={isSending}
       >
-        Objednat
+        {isSending ? "Odesílám..." : "Objednat"}
       </button>
     </div>
   );

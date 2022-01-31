@@ -5,7 +5,8 @@ export const Input = ({
   value = "",
   onChange,
   onlyUppercase,
-  maxLength
+  maxLength,
+  className = ""
 }) => {
   const [inputValue, setInputValue] = useState(value);
 
@@ -27,6 +28,7 @@ export const Input = ({
       value={inputValue}
       onChange={handleLocalChange}
       maxLength={maxLength}
+      className={className}
     />
   );
 };
