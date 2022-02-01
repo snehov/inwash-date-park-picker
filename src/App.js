@@ -6,8 +6,10 @@ import {
   moneyFormat,
   isDate,
   getProgramData,
-  getProgramDesription,
-  checkIsParking
+  getProgramDescription,
+  checkIsParking,
+  stripTags,
+  isNil
 } from "./utils";
 import { defaultSize } from "./ProgramSize";
 import { DateRangePick } from "./DateRangePick";
@@ -106,12 +108,13 @@ export default function App() {
   };
 
   const programDescription = useMemo(
-    () => getProgramDesription(chosenProgram),
+    () => getProgramDescription(chosenProgram),
     [chosenProgram]
   );
-  console.log("programDescription", programDescription, chosenProgram);
 
-  return (
+  return isNil(programData) ? (
+    <div>Program nenalezen</div>
+  ) : (
     <div className="App">
       {chosenProgram && (
         <>
@@ -119,16 +122,17 @@ export default function App() {
 
           <ul className="offerBox__items">
             {programDescription.map((item) => (
-              <li key={item}>{item}</li>
+              <li key={item}>{stripTags(item)}</li>
             ))}
           </ul>
         </>
       )}
+
       <div style={{ width: "333px" }}>
         <div className="upperLabel">Velikost vozu:</div>
-        {/* <ProgramSize currentSize={programSize} changeSize={changeSize} /> */}
         <ProgramSizeImage currentSize={programSize} changeSize={changeSize} />
       </div>
+
       {is_parking ? (
         <>
           <div>
@@ -141,11 +145,11 @@ export default function App() {
         </>
       ) : (
         <div>
-          Datum přijetí vozu:
-          <br />
+          <div className="upperLabel">Datum přijetí vozu:</div>
           <DatePick updateDate={recountDate} />
         </div>
       )}
+
       <p>
         <label>SPZ:</label>
         <Input
@@ -165,6 +169,7 @@ export default function App() {
       {errors.length > 0 && (
         <p className="errorLabel">{errors.map((error) => error.label)}</p>
       )}
+
       <button
         onClick={handleSubmitOrder}
         className="actionButton button offerBox__reserve"

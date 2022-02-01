@@ -1,9 +1,8 @@
-import { addDays, setHours, setMinutes, setSeconds } from "date-fns";
-import programData from "./data.json"; //TODO: remove before going to production
+import programData from "../data.json"; //TODO: remove before going to production, testing purpose only
+import { isNil } from "./common";
 
 export const excludeDatesArray =
-  typeof window.APP_DATA === "object" &&
-  Array.isArray(window.APP_DATA.excludeDates)
+  !isNil(window?.APP_DATA) && Array.isArray(window.APP_DATA.excludeDates)
     ? window.APP_DATA.excludeDates
     : [];
 
@@ -12,13 +11,15 @@ export const excludeDates = Array.isArray(excludeDatesArray)
   : [];
 
 export const getProgramData = () => {
-  return typeof window.APP_DATA === "object" &&
-    window.APP_DATA.program === "object"
+  return !isNil(window?.APP_DATA?.program)
     ? window.APP_DATA.program
-    : programData;
+    : null /* programData  =>for testing purpose of date range*/;
 };
 
 export const checkIsParking = (programData) => {
+  if (isNil(programData)) {
+    return false;
+  }
   if (Array.isArray(programData)) {
     return Boolean(programData[0].is_parking == "1"); //eslint-disable-line eqeqeq
   }
@@ -27,13 +28,6 @@ export const checkIsParking = (programData) => {
   }
   return false;
 };
-
-export function setDateFromNow(inDays, atHour) {
-  return setSeconds(
-    setMinutes(setHours(addDays(new Date(), inDays), atHour), 0),
-    0
-  );
-}
 
 export function modifyProgramByExtraDays(
   origProgram,
@@ -75,25 +69,9 @@ export function getProgramFromDays(data, days, EXTRA_DAY_PARK) {
   return res;
 }
 
-export function moneyFormat(value) {
-  const withFixes = Number(value)
-    .toFixed(2)
-    .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1 ");
-  if (String(withFixes).slice(-3) === ".00") {
-    return Number(value)
-      .toFixed(0)
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1 ");
-  }
-  return withFixes;
-}
-
-export function isDate(x) {
-  return x instanceof Date && !isNaN(x);
-}
-
-export const getProgramDesription = (chosenProgram) => {
-  if (chosenProgram === null) {
-    return ["..."];
+export const getProgramDescription = (chosenProgram) => {
+  if (isNil(chosenProgram)) {
+    return null;
   }
   if (typeof chosenProgram.description === "object") {
     return chosenProgram.description;
