@@ -103,8 +103,9 @@ export default function App() {
       })
       .catch((err) => {
         setError([{ ident: "sendErr", label: err.message }]);
-      })
-      .finally(() => setIsSending(false));
+        setIsSending(false);
+      });
+    //.finally(() => setIsSending(false));
   };
 
   const programDescription = useMemo(

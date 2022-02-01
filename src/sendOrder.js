@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { variantDateFormat } from "./variables";
-import { isNil } from "./utils";
+import { isNil, inIframe } from "./utils";
 
 export const sendOrder = async ({
   from,
@@ -10,7 +10,6 @@ export const sendOrder = async ({
   size,
   daysOver
 }) => {
-  console.log("from", from, "to", to);
   const data = {
     product_id: productId,
     variant: `${format(from, variantDateFormat)}${
@@ -22,7 +21,7 @@ export const sendOrder = async ({
     //dateTo: to,
     daysOver: daysOver
   };
-  console.log("DATA", data);
+
   fetch("https://inwash.cz/shop/cart_api/addToCart", {
     method: "POST", // or 'PUT'
     headers: {
@@ -43,11 +42,3 @@ export const sendOrder = async ({
       console.error("Error?:", error);
     });
 };
-
-function inIframe() {
-  try {
-    return window.self !== window.top;
-  } catch (e) {
-    return true;
-  }
-}

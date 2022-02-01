@@ -17,3 +17,11 @@ export function moneyFormat(value) {
   }
   return withFixes;
 }
+
+export function inIframe() {
+  try {
+    return window.self !== window.top;
+  } catch (e) {
+    return true;
+  }
+}
