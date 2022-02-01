@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { format } from "date-fns";
-import { setDateFromNow, excludeDates } from "./utils/date";
+import { setDateFromNow, excludeDates } from "./utils";
 import { dateFormat } from "./variables";
 import { RenderCustomDayLabel, DateFromCustomWrapper } from "./DateExtensions";
 import "react-datepicker/dist/react-datepicker.css";
