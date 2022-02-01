@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { variantDateFormat } from "./variables";
+import { isNil } from "./utils";
 
 export const sendOrder = async ({
   from,
@@ -9,10 +10,11 @@ export const sendOrder = async ({
   size,
   daysOver
 }) => {
+  console.log("from", from, "to", to);
   const data = {
     product_id: productId,
     variant: `${format(from, variantDateFormat)}${
-      to === null ? "" : ` - ${format(to, variantDateFormat)}`
+      isNil(to) ? "" : ` - ${format(to, variantDateFormat)}`
     }`,
     variant2: size,
     spz: vrp,

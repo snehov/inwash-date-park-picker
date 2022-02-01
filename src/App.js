@@ -102,7 +102,7 @@ export default function App() {
         setError([]);
       })
       .catch((err) => {
-        setError([{ ident: "sendErr", label: err }]);
+        setError([{ ident: "sendErr", label: err.message }]);
       })
       .finally(() => setIsSending(false));
   };
