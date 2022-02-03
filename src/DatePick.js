@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import DatePicker from "react-datepicker";
 import { format } from "date-fns";
 import { setDateFromNow, excludeDates } from "./utils";
@@ -9,13 +9,22 @@ import "react-datepicker/dist/react-datepicker.css";
 export const DatePick = ({ updateDate }) => {
   const [startDate, setStartDate] = useState(setDateFromNow(1, 8));
   const [isStartOpen, setIsStartOpen] = useState(false);
-
   useEffect(() => {
     updateDate({ startDate });
   }, [startDate]);
+  const pageEndRef = useRef(null);
 
+  const scrollToBottom = () => {
+    console.log("scroll down");
+    setTimeout(() => {
+      pageEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }, 0);
+  };
   const toggleStart = (e) => {
     e.preventDefault();
+    if (!isStartOpen) {
+      scrollToBottom();
+    }
     setIsStartOpen(!isStartOpen);
   };
 
@@ -30,7 +39,7 @@ export const DatePick = ({ updateDate }) => {
       <button onClick={toggleStart} className="uneditable-input datePickButton">
         {format(startDate, dateFormat)}
       </button>
-      <br />
+      <br ref={pageEndRef} />
       {isStartOpen && (
         <DatePicker
           selected={startDate}

@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { differenceInMinutes } from "date-fns";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import {
@@ -39,6 +39,7 @@ export default function App() {
     startDate: null,
     endDate: null
   });
+  const pageEndRef = useRef(null);
 
   const recountDateRange = ({ startDate, endDate }) => {
     if (!isDate(startDate) || !isDate(endDate)) {
@@ -147,7 +148,7 @@ export default function App() {
       ) : (
         <div>
           <div className="upperLabel">Datum přijetí vozu:</div>
-          <DatePick updateDate={recountDate} />
+          <DatePick updateDate={recountDate} pageEndRef={pageEndRef} />
         </div>
       )}
 
@@ -178,6 +179,7 @@ export default function App() {
       >
         {isSending ? "Odesílám..." : "Objednat"}
       </button>
+      <div ref={pageEndRef} className="REF" />
     </div>
   );
 }
