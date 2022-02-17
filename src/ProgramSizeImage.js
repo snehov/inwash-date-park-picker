@@ -1,4 +1,3 @@
-import { useState, useRef, useMemo } from "react";
 import Select from "react-select";
 import { sizes } from "./lists";
 
@@ -22,16 +21,13 @@ export const defaultSize = sizes.find((f) => f.default === true).ident;
 
 export const ProgramSizeImage = ({ currentSize, changeSize }) => {
   //const defaultValue = useRef(currentSize);
-
   const defaultOption = options.find((f) => f.value === currentSize);
 
   const internalChangeSize = (newSize) => {
-    //console.log("new size ", newSize);
     changeSize(newSize.value);
   };
 
   //console.log("defaultOption>>", defaultOption, "options", options);
-
   return (
     <Select
       options={options}

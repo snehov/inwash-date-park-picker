@@ -1,4 +1,4 @@
-import programData from "../data.json"; //TODO: remove before going to production, testing purpose only
+//import programData from "../data.json"; //TODO: remove before going to production, testing purpose only
 import { isNil } from "./common";
 
 export const excludeDatesArray =

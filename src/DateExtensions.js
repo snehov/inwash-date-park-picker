@@ -24,6 +24,6 @@ export const RenderCustomDayLabel = (day, date) => {
       {getDate(date)}
     </span>
   ) : (
-    <span>{getDate(date)}</span>
+    getDate(date)
   );
 };

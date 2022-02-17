@@ -1,14 +1,16 @@
 import React, { useEffect, useState, useRef } from "react";
 import DatePicker from "react-datepicker";
 import { format } from "date-fns";
-import { setDateFromNow, excludeDates } from "./utils";
+import { excludeDates, getDefaultDate } from "./utils";
 import { dateFormat } from "./variables";
 import { RenderCustomDayLabel, DateFromCustomWrapper } from "./DateExtensions";
 import "react-datepicker/dist/react-datepicker.css";
 
 export const DatePick = ({ updateDate }) => {
-  const [startDate, setStartDate] = useState(setDateFromNow(1, 8));
   const [isStartOpen, setIsStartOpen] = useState(false);
+  const [startDate, setStartDate] = useState(
+    getDefaultDate(1, 8, excludeDates)
+  );
   useEffect(() => {
     updateDate({ startDate });
   }, [startDate]);
