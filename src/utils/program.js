@@ -1,9 +1,23 @@
 //import programData from "../data.json"; //TODO: remove before going to production, testing purpose only
-import { isNil } from "./common";
+import { isNil, isArray } from "./common";
+import { isBefore } from "date-fns";
+
+export const removePastDates = (dates = [], before = new Date()) => {
+  if (!isArray(dates)) {
+    return dates;
+  }
+  let newDates = [];
+  dates.forEach((date) => {
+    if (!isBefore(new Date(date), before)) {
+      newDates.push(date);
+    }
+  });
+  return newDates;
+};
 
 export const excludeDatesArray =
   !isNil(window?.APP_DATA) && Array.isArray(window.APP_DATA.excludeDates)
-    ? window.APP_DATA.excludeDates
+    ? removePastDates(window.APP_DATA.excludeDates)
     : [];
 
 export const excludeDates = Array.isArray(excludeDatesArray)
@@ -11,6 +25,7 @@ export const excludeDates = Array.isArray(excludeDatesArray)
   : [];
 
 export const getProgramData = () => {
+  console.log("removePastDates>>", removePastDates(excludeDatesArray));
   return !isNil(window?.APP_DATA?.program)
     ? window.APP_DATA.program
     : null /* programData  =>for testing purpose of date range*/;

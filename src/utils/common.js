@@ -2,6 +2,10 @@ export const isNil = (value) => {
   return Boolean(value === undefined || value === null);
 };
 
+export const isArray = (value) => {
+  return Boolean(Array.isArray(value));
+};
+
 export const stripTags = (content) => {
   return content.replace(/(<([^>]+)>)/gi, "");
 };
