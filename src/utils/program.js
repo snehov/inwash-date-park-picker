@@ -25,7 +25,6 @@ export const excludeDates = Array.isArray(excludeDatesArray)
   : [];
 
 export const getProgramData = () => {
-  console.log("removePastDates>>", removePastDates(excludeDatesArray));
   return !isNil(window?.APP_DATA?.program)
     ? window.APP_DATA.program
     : null /* programData  =>for testing purpose of date range*/;

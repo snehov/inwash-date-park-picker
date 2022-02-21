@@ -17,7 +17,6 @@ export const DatePick = ({ updateDate }) => {
   const pageEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    console.log("scroll down");
     setTimeout(() => {
       pageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }, 0);
