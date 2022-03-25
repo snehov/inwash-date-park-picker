@@ -1,6 +1,6 @@
 //import programData from "../data.json"; //TODO: remove before going to production, testing purpose only
 import { isNil, isArray } from "./common";
-import { isBefore } from "date-fns";
+import { isBefore, isToday } from "date-fns";
 
 export const removePastDates = (dates = [], before = new Date()) => {
   if (!isArray(dates)) {
@@ -8,7 +8,7 @@ export const removePastDates = (dates = [], before = new Date()) => {
   }
   let newDates = [];
   dates.forEach((date) => {
-    if (!isBefore(new Date(date), before)) {
+    if (!isBefore(new Date(date), before) || isToday(new Date(date))) {
       newDates.push(date);
     }
   });
