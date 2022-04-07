@@ -10,6 +10,9 @@
   padding: 5px 16px;
   margin: 5px;
 }
+.react-datepicker-popper {
+  min-width: 345px;
+}
 .startDate,
 .endDate {
   margin: 5px 0;
