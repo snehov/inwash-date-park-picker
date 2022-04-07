@@ -19,8 +19,11 @@
   display: inline-block;
 }
 .datePickButton {
-  margin: 3px;
-  padding: 5px 15px;
+  margin: 3px 0px;
+  padding: 8px 15px 5px;
+  width: 200px;
+  height: 45px;
+  font-size: 19px;
 }
 .upperLabel {
   font-size: 25px;

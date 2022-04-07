@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { variantDateFormat } from "./variables";
+import { sendDateFormat } from "./variables";
 import { isNil, inIframe } from "./utils";
 
 export const sendOrder = async ({
@@ -12,8 +12,8 @@ export const sendOrder = async ({
 }) => {
   const data = {
     product_id: productId,
-    variant: `${format(from, variantDateFormat)}${
-      isNil(to) ? "" : ` - ${format(to, variantDateFormat)}`
+    variant: `${format(from, sendDateFormat)}${
+      isNil(to) ? "" : ` - ${format(to, sendDateFormat)}`
     }`,
     variant2: size,
     spz: vrp,
