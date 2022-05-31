@@ -11,6 +11,7 @@ import {
   stripTags,
   isNil
 } from "./utils";
+import { useExcludedDates } from "./utils/useExcludedDates";
 import { defaultSize } from "./ProgramSize";
 import { DateRangePick } from "./DateRangePick";
 import { DatePick } from "./DatePick";
@@ -39,6 +40,7 @@ export default function App() {
     startDate: null,
     endDate: null
   });
+  const { excludedDatesStatus, excludedDates } = useExcludedDates();
   const pageEndRef = useRef(null);
 
   const recountDateRange = ({ startDate, endDate }) => {
@@ -139,7 +141,10 @@ export default function App() {
         <>
           <div>
             <div className="upperLabel">Vyberte rozmezí parkování:</div>
-            <DateRangePick updateDate={recountDateRange} />
+            <DateRangePick
+              updateDate={recountDateRange}
+              dateExclusions={excludedDates}
+            />
           </div>
           <div className="important">
             <label></label>počet dní: {daysCalc}
@@ -148,7 +153,11 @@ export default function App() {
       ) : (
         <div>
           <div className="upperLabel">Datum přijetí vozu:</div>
-          <DatePick updateDate={recountDate} pageEndRef={pageEndRef} />
+          <DatePick
+            updateDate={recountDate}
+            pageEndRef={pageEndRef}
+            dateExclusions={excludedDates.singleFrom}
+          />
         </div>
       )}
 

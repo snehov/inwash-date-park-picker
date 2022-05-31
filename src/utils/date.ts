@@ -14,24 +14,6 @@ export function isDate(x) {
   return x instanceof Date && !isNaN(x);
 }
 
-export function getDefaultDate(inDays, atHour, excludeDates) {
-  let nearestDay = setDateFromNow(inDays, atHour);
-  let dateCollision = true;
-  let inDaysMore = inDays;
-
-  while (dateCollision) {
-    if (isCollisionExclDate(excludeDates, nearestDay)) {
-      inDaysMore++;
-      nearestDay = setDateFromNow(inDaysMore, atHour);
-      dateCollision = true;
-    } else {
-      dateCollision = false;
-    }
-  }
-
-  return nearestDay;
-}
-
 function isCollisionExclDate(exclDates, checkDate) {
   let collision = false;
   exclDates.forEach((exclDay) => {
@@ -40,4 +22,31 @@ function isCollisionExclDate(exclDates, checkDate) {
     }
   });
   return collision;
+}
+
+export function getDefaultDate(
+  inDays: number,
+  atHour: number,
+  excludeDates: Array<string>,
+  startDate: null | object = null
+) {
+  let nearestDay = startDate
+    ? addDateFrom(startDate, inDays, atHour)
+    : setDateFromNow(inDays, atHour);
+
+  let dateCollision = true;
+  let inDaysMore = inDays;
+
+  while (dateCollision) {
+    if (isCollisionExclDate(excludeDates, nearestDay)) {
+      inDaysMore++;
+      nearestDay = startDate
+        ? addDateFrom(startDate, inDaysMore, atHour)
+        : setDateFromNow(inDaysMore, atHour);
+      dateCollision = true;
+    } else {
+      dateCollision = false;
+    }
+  }
+  return nearestDay;
 }

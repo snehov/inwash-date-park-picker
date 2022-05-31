@@ -1,25 +1,47 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import DatePicker from "react-datepicker";
-import { format, addDays, isAfter } from "date-fns";
-import { excludeDates, getDefaultDate, addDateFrom } from "./utils";
+import { format, addDays, isAfter, isSameDay } from "date-fns";
+import { parseDateArray, getDefaultDate } from "./utils";
 import { dateFormat } from "./variables";
-import { RenderCustomDayLabel, DateFromCustomWrapper } from "./DateExtensions";
+import {
+  RenderCustomDayLabel,
+  DatePickHeaderStartRange,
+  DatePickHeaderEndRange
+} from "./DateExtensions";
 import "react-datepicker/dist/react-datepicker.css";
 
-const defaultDayStart = getDefaultDate(1, 8, excludeDates);
+export const DateRangePick = ({ updateDate, dateExclusions }) => {
+  const firstDate = useMemo(
+    () => getDefaultDate(1, 8, parseDateArray(dateExclusions.rangeFrom)),
+    [dateExclusions.rangeFrom]
+  );
 
-export const DateRangePick = ({ updateDate }) => {
-  const [startDate, setStartDate] = useState(defaultDayStart);
-  const [endDate, setEndDate] = useState(addDateFrom(defaultDayStart, 1, 8));
+  const secondDate = useMemo(
+    () =>
+      getDefaultDate(1, 8, parseDateArray(dateExclusions.rangeTo), firstDate),
+    [dateExclusions.rangeTo, firstDate]
+  );
+  console.log("SECOND DAYE", secondDate, "FIRST", firstDate);
+
+  const [startDate, setStartDate] = useState(firstDate);
+  const [endDate, setEndDate] = useState(secondDate);
+  const excludedDatesFrom = useMemo(
+    () => parseDateArray(dateExclusions.rangeFrom),
+    [dateExclusions]
+  );
 
   useEffect(() => {
     updateDate({ startDate, endDate });
   }, [startDate, endDate]);
 
+  useEffect(() => {
+    setStartDate(firstDate);
+    setEndDate(secondDate);
+  }, [dateExclusions, firstDate, secondDate]);
+
   const updateStartDate = (date) => {
     setStartDate(date);
-
-    if (isAfter(date, endDate)) {
+    if (isAfter(date, endDate) || isSameDay(date, endDate)) {
       setEndDate(addDays(date, 1));
     }
   };
@@ -31,6 +53,7 @@ export const DateRangePick = ({ updateDate }) => {
       </button>
     );
   };
+  const minDateOfTo = useMemo(() => addDays(startDate, 1), [startDate]);
 
   return (
     <React.Fragment>
@@ -44,9 +67,15 @@ export const DateRangePick = ({ updateDate }) => {
           endDate={endDate}
           showTimeSelect
           dateFormat={dateFormat}
-          calendarContainer={DateFromCustomWrapper}
-          excludeDates={excludeDates}
-          renderDayContents={RenderCustomDayLabel}
+          calendarContainer={DatePickHeaderStartRange}
+          excludeDates={excludedDatesFrom}
+          renderDayContents={(day, date) => (
+            <RenderCustomDayLabel
+              day={day}
+              date={date}
+              excludeDates={dateExclusions.rangeFrom}
+            />
+          )}
           minDate={new Date()}
           customInput={<CustomInput date={startDate} />}
         />
@@ -60,10 +89,18 @@ export const DateRangePick = ({ updateDate }) => {
           selectsEnd
           startDate={startDate}
           endDate={endDate}
-          minDate={startDate}
+          minDate={minDateOfTo}
           showTimeSelect
           dateFormat={dateFormat}
+          calendarContainer={DatePickHeaderEndRange}
           customInput={<CustomInput date={endDate} />}
+          renderDayContents={(day, date) => (
+            <RenderCustomDayLabel
+              day={day}
+              date={date}
+              excludeDates={dateExclusions.rangeTo}
+            />
+          )}
         />
       </div>
     </React.Fragment>

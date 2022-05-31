@@ -1,6 +1,7 @@
 //import programData from "../data.json"; //TODO: remove before going to production, testing purpose only
 import { isNil, isArray } from "./common";
 import { isBefore, isToday } from "date-fns";
+import programData from "../data.json"; //TODO: remove before going to production, testing purpose only
 
 export const removePastDates = (dates = [], before = new Date()) => {
   if (!isArray(dates)) {
@@ -15,19 +16,29 @@ export const removePastDates = (dates = [], before = new Date()) => {
   return newDates;
 };
 
-export const excludeDatesArray =
+//TODO: remove once loading from fetch json done
+/* export const excludeDatesArray =
   !isNil(window?.APP_DATA) && Array.isArray(window.APP_DATA.excludeDates)
     ? removePastDates(window.APP_DATA.excludeDates)
     : [];
 
 export const excludeDates = Array.isArray(excludeDatesArray)
   ? excludeDatesArray.map((date) => new Date(date))
-  : [];
+  : []; */
+
+export const parseDateArray = (excludeDatesArray) => {
+  try {
+    return Array.isArray(excludeDatesArray)
+      ? excludeDatesArray.map((date) => new Date(date))
+      : [];
+  } catch (err) {
+    console.log("Dates parse error", err);
+    return [];
+  }
+};
 
 export const getProgramData = () => {
-  return !isNil(window?.APP_DATA?.program)
-    ? window.APP_DATA.program
-    : null /* programData  =>for testing purpose of date range*/;
+  return !isNil(window?.APP_DATA?.program) ? window.APP_DATA.program : null; //programData  =>for testing purpose of date range*/
 };
 
 export const checkIsParking = (programData) => {

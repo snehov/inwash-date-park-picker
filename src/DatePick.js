@@ -1,18 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import DatePicker from "react-datepicker";
 import { format } from "date-fns";
-import { excludeDates, getDefaultDate } from "./utils";
+import { getDefaultDate, parseDateArray } from "./utils";
 import { dateFormat } from "./variables";
 import { RenderCustomDayLabel, DateFromCustomWrapper } from "./DateExtensions";
 import "react-datepicker/dist/react-datepicker.css";
 
-export const DatePick = ({ updateDate }) => {
+export const DatePick = ({ updateDate, dateExclusions }) => {
+  const excludeDates = useMemo(() => parseDateArray(dateExclusions), [
+    dateExclusions
+  ]);
   const [startDate, setStartDate] = useState(
     getDefaultDate(1, 8, excludeDates)
   );
   useEffect(() => {
     updateDate({ startDate });
   }, [startDate]);
+
+  useEffect(() => {
+    setStartDate(getDefaultDate(1, 8, excludeDates));
+  }, [excludeDates]);
 
   const CustomInput = ({ onClick }) => {
     return (
@@ -34,7 +41,13 @@ export const DatePick = ({ updateDate }) => {
         dateFormat={dateFormat}
         calendarContainer={DateFromCustomWrapper}
         excludeDates={excludeDates}
-        renderDayContents={RenderCustomDayLabel}
+        renderDayContents={(day, date) => (
+          <RenderCustomDayLabel
+            day={day}
+            date={date}
+            excludeDates={dateExclusions}
+          />
+        )}
         minDate={new Date()}
         customInput={<CustomInput />}
       />
