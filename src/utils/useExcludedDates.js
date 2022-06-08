@@ -7,18 +7,16 @@ const defaultExcludedDates = {
   rangeTo: []
 };
 
-enum RequestStatus {
-  IDLE,
-  LOADING,
-  ERROR,
-  SUCCESS
-}
+const RequestStatus = {
+  IDLE: "idle",
+  LOADING: "loading",
+  ERROR: "error",
+  SUCCESS: "success"
+};
 
 export const useExcludedDates = () => {
   const [excludedDates, setExcludedDates] = useState(defaultExcludedDates);
-  const [requestStatus, setRequestStatus] = useState<RequestStatus>(
-    RequestStatus.IDLE
-  );
+  const [requestStatus, setRequestStatus] = useState(RequestStatus.IDLE);
 
   const fetchData = async () => {
     //await new Promise((r) => setTimeout(r, 5000));
