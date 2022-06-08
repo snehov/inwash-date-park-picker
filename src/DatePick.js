@@ -3,7 +3,10 @@ import DatePicker from "react-datepicker";
 import { format } from "date-fns";
 import { getDefaultDate, parseDateArray } from "./utils";
 import { dateFormat } from "./variables";
-import { RenderCustomDayLabel, DateFromCustomWrapper } from "./DateExtensions";
+import {
+  RenderCustomDayLabel,
+  DatePickHeaderStartRange
+} from "./DateExtensions";
 import "react-datepicker/dist/react-datepicker.css";
 
 export const DatePick = ({ updateDate, dateExclusions }) => {
@@ -39,7 +42,7 @@ export const DatePick = ({ updateDate, dateExclusions }) => {
         startDate={startDate}
         showTimeSelect
         dateFormat={dateFormat}
-        calendarContainer={DateFromCustomWrapper}
+        calendarContainer={DatePickHeaderStartRange}
         excludeDates={excludeDates}
         renderDayContents={(day, date) => (
           <RenderCustomDayLabel
