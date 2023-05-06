@@ -9,7 +9,7 @@ import {
   getProgramDescription,
   checkIsParking,
   stripTags,
-  isNil
+  isNil,
 } from "./utils";
 import { useExcludedDates } from "./utils/useExcludedDates";
 import { defaultSize } from "./ProgramSize";
@@ -38,7 +38,7 @@ export default function App() {
   const [isSending, setIsSending] = useState(false);
   const [dateRange, setDateRange] = useState({
     startDate: null,
-    endDate: null
+    endDate: null,
   });
   const { excludedDatesStatus, excludedDates } = useExcludedDates();
   const pageEndRef = useRef(null);
@@ -98,7 +98,7 @@ export default function App() {
       vrp,
       productId: chosenProgram.id_service,
       size: programSize,
-      daysOver: chosenProgram.extraDays ?? 0
+      daysOver: chosenProgram.extraDays ?? 0,
     };
     sendOrder(data)
       .then((res) => {
@@ -109,6 +109,11 @@ export default function App() {
         setIsSending(false);
       });
     //.finally(() => setIsSending(false));
+  };
+  const handleRedirectToPark = () => {
+    const serviceName = `${programData.name_ident}+park`;
+    console.log("serviceName", serviceName);
+    location.href = `/?ident=${serviceName}`;
   };
 
   const programDescription = useMemo(
@@ -158,6 +163,12 @@ export default function App() {
             pageEndRef={pageEndRef}
             dateExclusions={excludedDates.singleFrom}
           />
+          <button
+            onClick={handleRedirectToPark}
+            className="button button--alternative"
+          >
+            Chci u vás i zaparkovat
+          </button>
         </div>
       )}
 
