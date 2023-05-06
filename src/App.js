@@ -113,7 +113,7 @@ export default function App() {
   const handleRedirectToPark = () => {
     const serviceName = `${programData.name_ident}+park`;
     console.log("serviceName", serviceName);
-    location.href = location.pathname`?ident=${serviceName}`;
+    location.href = `${location.pathname}?ident=${serviceName}`;
   };
 
   const programDescription = useMemo(
