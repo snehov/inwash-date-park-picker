@@ -1,6 +1,13 @@
 import React, { useEffect, useState, useMemo } from "react";
 import DatePicker from "react-datepicker";
-import { format, addDays, isAfter, isSameDay } from "date-fns";
+import {
+  format,
+  addDays,
+  isAfter,
+  isSameDay,
+  setMinutes,
+  setHours
+} from "date-fns";
 import { parseDateArray, getDefaultDate } from "./utils";
 import { dateFormat } from "./variables";
 import {
@@ -9,8 +16,16 @@ import {
   DatePickHeaderEndRange
 } from "./DateExtensions";
 import "react-datepicker/dist/react-datepicker.css";
+import { TimePicker } from "./TimePicker";
 
-export const DateRangePick = ({ updateDate, dateExclusions }) => {
+export const DateRangePick = ({
+  updateDate,
+  dateExclusions,
+  setTimeIn,
+  setTimeOut,
+  isTimeInAlert,
+  isTimeOutAlert
+}) => {
   const firstDate = useMemo(
     () => getDefaultDate(1, 8, parseDateArray(dateExclusions.rangeFrom)),
     [dateExclusions.rangeFrom]
@@ -53,6 +68,24 @@ export const DateRangePick = ({ updateDate, dateExclusions }) => {
       </button>
     );
   };
+  const handleTimeInChange = (newTime) => {
+    if (newTime === "") {
+      return false;
+    }
+    const [hours, minutes] = newTime.split(":");
+    const newDateTime = setMinutes(setHours(startDate, hours), minutes);
+    setStartDate(newDateTime);
+    setTimeIn(newTime);
+  };
+  const handleTimeOutChange = (newTime) => {
+    if (newTime === "") {
+      return false;
+    }
+    const [hours, minutes] = newTime.split(":");
+    const newDateTime = setMinutes(setHours(endDate, hours), minutes);
+    setEndDate(newDateTime);
+    setTimeOut(newTime);
+  };
   const minDateOfTo = useMemo(() => addDays(startDate, 1), [startDate]);
 
   return (
@@ -65,7 +98,7 @@ export const DateRangePick = ({ updateDate, dateExclusions }) => {
           selectsStart
           startDate={startDate}
           endDate={endDate}
-          showTimeSelect
+          //showTimeSelect
           dateFormat={dateFormat}
           calendarContainer={DatePickHeaderStartRange}
           excludeDates={excludedDatesFrom}
@@ -79,6 +112,7 @@ export const DateRangePick = ({ updateDate, dateExclusions }) => {
           minDate={new Date()}
           customInput={<CustomInput date={startDate} />}
         />
+        <TimePicker onChange={handleTimeInChange} isTimeAlert={isTimeInAlert} />
       </div>
 
       <div className="endDate">
@@ -90,7 +124,7 @@ export const DateRangePick = ({ updateDate, dateExclusions }) => {
           startDate={startDate}
           endDate={endDate}
           minDate={minDateOfTo}
-          showTimeSelect
+          //showTimeSelect
           dateFormat={dateFormat}
           calendarContainer={DatePickHeaderEndRange}
           customInput={<CustomInput date={endDate} />}
@@ -101,6 +135,10 @@ export const DateRangePick = ({ updateDate, dateExclusions }) => {
               excludeDates={dateExclusions.rangeTo}
             />
           )}
+        />
+        <TimePicker
+          onChange={handleTimeOutChange}
+          isTimeAlert={isTimeOutAlert}
         />
       </div>
     </React.Fragment>

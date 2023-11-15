@@ -1,15 +1,21 @@
 import React, { useEffect, useState, useMemo } from "react";
 import DatePicker from "react-datepicker";
-import { format } from "date-fns";
+import { format, setMinutes, setHours } from "date-fns";
 import { getDefaultDate, parseDateArray } from "./utils";
-import { dateFormat } from "./variables";
+import { dateFormat, dateTimeFormat } from "./variables";
 import {
   RenderCustomDayLabel,
   DatePickHeaderStartRange
 } from "./DateExtensions";
 import "react-datepicker/dist/react-datepicker.css";
+import { TimePicker } from "./TimePicker";
 
-export const DatePick = ({ updateDate, dateExclusions }) => {
+export const DatePick = ({
+  updateDate,
+  dateExclusions,
+  isTimeAlert = false,
+  setTime
+}) => {
   const excludeDates = useMemo(() => parseDateArray(dateExclusions), [
     dateExclusions
   ]);
@@ -31,6 +37,15 @@ export const DatePick = ({ updateDate, dateExclusions }) => {
       </button>
     );
   };
+  const handleTimeChange = (newTime) => {
+    if (newTime === "") {
+      return false;
+    }
+    const [hours, minutes] = newTime.split(":");
+    const newDateTime = setMinutes(setHours(startDate, hours), minutes);
+    setStartDate(newDateTime);
+    setTime(newTime);
+  };
 
   return (
     <div className="startDate">
@@ -40,7 +55,7 @@ export const DatePick = ({ updateDate, dateExclusions }) => {
         onChange={setStartDate}
         selectsStart
         startDate={startDate}
-        showTimeSelect
+        //showTimeSelect
         dateFormat={dateFormat}
         calendarContainer={DatePickHeaderStartRange}
         excludeDates={excludeDates}
@@ -54,6 +69,7 @@ export const DatePick = ({ updateDate, dateExclusions }) => {
         minDate={new Date()}
         customInput={<CustomInput />}
       />
+      <TimePicker onChange={handleTimeChange} isTimeAlert={isTimeAlert} />
     </div>
   );
 };
