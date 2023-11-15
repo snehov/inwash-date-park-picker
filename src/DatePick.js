@@ -46,7 +46,7 @@ export const DatePick = ({
     setStartDate(newDateTime);
     setTime(newTime);
   };
-  //console.log("!startDate", startDate);
+
   return (
     <div className="startDate">
       <label></label>
