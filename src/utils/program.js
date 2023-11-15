@@ -38,7 +38,7 @@ export const parseDateArray = (excludeDatesArray) => {
 };
 
 export const getProgramData = () => {
-  return !isNil(window?.APP_DATA?.program) ? window.APP_DATA.program : null; //programData  =>for testing purpose of date range*/
+  return programData; //!isNil(window?.APP_DATA?.program) ? window.APP_DATA.program : null; //programData  =>for testing purpose of date range*/
 };
 
 export const checkIsParking = (programData) => {

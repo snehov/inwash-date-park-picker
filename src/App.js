@@ -9,7 +9,7 @@ import {
   getProgramDescription,
   checkIsParking,
   stripTags,
-  isNil,
+  isNil
 } from "./utils";
 import { useExcludedDates } from "./utils/useExcludedDates";
 import { defaultSize } from "./ProgramSize";
@@ -34,11 +34,13 @@ export default function App() {
   const [chosenProgram, setChosenProgram] = useState(null);
   const [programSize, setProgramSize] = useState(defaultSize);
   const [vrp, setVrp] = useState("");
+  const [timeIn, setTimeIn] = useState("");
+  const [timeOut, setTimeOut] = useState("");
   const [errors, setError] = useState([]);
   const [isSending, setIsSending] = useState(false);
   const [dateRange, setDateRange] = useState({
     startDate: null,
-    endDate: null,
+    endDate: null
   });
   const { excludedDatesStatus, excludedDates } = useExcludedDates();
   const pageEndRef = useRef(null);
@@ -87,9 +89,20 @@ export default function App() {
 
   const handleSubmitOrder = () => {
     if (vrp === "") {
-      setError([...errors, { ident: "vrp", label: "Není zadaná SPZ" }]);
+      setError([{ ident: "vrp", label: "Není zadaná SPZ" }]);
       return false;
     }
+    if (timeIn === "") {
+      setError([{ ident: "timeIn", label: "Není zadaný čas příjezdu" }]);
+      return false;
+    }
+    if (is_parking) {
+      if (timeOut === "") {
+        setError([{ ident: "timeOut", label: "Není zadaný čas odjezdu" }]);
+        return false;
+      }
+    }
+
     setIsSending(true);
     setError([]);
     const data = {
@@ -98,7 +111,7 @@ export default function App() {
       vrp,
       productId: chosenProgram.id_service,
       size: programSize,
-      daysOver: chosenProgram.extraDays ?? 0,
+      daysOver: chosenProgram.extraDays ?? 0
     };
     sendOrder(data)
       .then((res) => {
@@ -109,6 +122,18 @@ export default function App() {
         setIsSending(false);
       });
     //.finally(() => setIsSending(false));
+  };
+  const handleSetTimeIn = (newTime) => {
+    setTimeIn(newTime);
+    if (errors.find((f) => f.ident === "timeIn")) {
+      setError([]);
+    }
+  };
+  const handleSetTimeOut = (newTime) => {
+    setTimeOut(newTime);
+    if (errors.find((f) => f.ident === "timeOut")) {
+      setError([]);
+    }
   };
   const handleRedirectToPark = () => {
     const serviceName = `${programData.name_ident}+park`;
@@ -149,6 +174,10 @@ export default function App() {
             <DateRangePick
               updateDate={recountDateRange}
               dateExclusions={excludedDates}
+              setTimeIn={handleSetTimeIn}
+              isTimeInAlert={errors.find((f) => f.ident === "timeIn")}
+              setTimeOut={handleSetTimeOut}
+              isTimeOutAlert={errors.find((f) => f.ident === "timeOut")}
             />
           </div>
           <div className="important">
@@ -162,6 +191,8 @@ export default function App() {
             updateDate={recountDate}
             pageEndRef={pageEndRef}
             dateExclusions={excludedDates.singleFrom}
+            isTimeAlert={errors.find((f) => f.ident === "timeIn")}
+            setTime={handleSetTimeIn}
           />
           <button
             onClick={handleRedirectToPark}

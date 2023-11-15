@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { AVAILABLE_TIMES } from "./variables";
-export const TimePicker = ({ onChange, defaultValue = "" }) => {
+export const TimePicker = ({
+  onChange,
+  isTimeAlert = false,
+  defaultValue = ""
+}) => {
   const [lastValue, setLastValue] = useState(defaultValue);
   const handleChange = (e) => {
     onChange(e.target.value);
@@ -9,6 +13,7 @@ export const TimePicker = ({ onChange, defaultValue = "" }) => {
   return (
     <>
       <select
+        className={isTimeAlert ? "alert" : ""}
         onChange={handleChange}
         defaultValue={defaultValue}
         style={{

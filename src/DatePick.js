@@ -10,7 +10,12 @@ import {
 import "react-datepicker/dist/react-datepicker.css";
 import { TimePicker } from "./TimePicker";
 
-export const DatePick = ({ updateDate, dateExclusions }) => {
+export const DatePick = ({
+  updateDate,
+  dateExclusions,
+  isTimeAlert = false,
+  setTime
+}) => {
   const excludeDates = useMemo(() => parseDateArray(dateExclusions), [
     dateExclusions
   ]);
@@ -34,14 +39,12 @@ export const DatePick = ({ updateDate, dateExclusions }) => {
   };
   const handleTimeChange = (newTime) => {
     if (newTime === "") {
-      //TODO: missing disabled button before time changed from ""
-      console.log("not a valid time");
       return false;
     }
-
     const [hours, minutes] = newTime.split(":");
     const newDateTime = setMinutes(setHours(startDate, hours), minutes);
     setStartDate(newDateTime);
+    setTime(newTime);
   };
   //console.log("!startDate", startDate);
   return (
@@ -66,7 +69,7 @@ export const DatePick = ({ updateDate, dateExclusions }) => {
         minDate={new Date()}
         customInput={<CustomInput />}
       />
-      <TimePicker onChange={handleTimeChange} />
+      <TimePicker onChange={handleTimeChange} isTimeAlert={isTimeAlert} />
     </div>
   );
 };
