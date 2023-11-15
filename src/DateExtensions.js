@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 export const DatePickHeaderStartRange = ({ className, children }) => {
   return (
     <CalendarContainer className={className}>
-      <div style={{ background: "#f0f0f0" }}>Vyberte datum, čas příjezdu</div>
+      <div style={{ background: "#f0f0f0" }}>Vyberte datum příjezdu</div>
       <div style={{ position: "relative" }}>{children}</div>
     </CalendarContainer>
   );
@@ -15,7 +15,7 @@ export const DatePickHeaderStartRange = ({ className, children }) => {
 export const DatePickHeaderEndRange = ({ className, children }) => {
   return (
     <CalendarContainer className={className}>
-      <div style={{ background: "#f0f0f0" }}>Vyberte datum, čas odjezdu</div>
+      <div style={{ background: "#f0f0f0" }}>Vyberte datum odjezdu</div>
       <div style={{ position: "relative" }}>{children}</div>
     </CalendarContainer>
   );

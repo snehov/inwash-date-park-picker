@@ -3,7 +3,7 @@
 }
 .react-datepicker-wrapper {
   display: inline-block;
-  width: 130px;
+  width: 200px;
 }
 .react-datepicker__input-container > input {
   border: 1px solid blue;
