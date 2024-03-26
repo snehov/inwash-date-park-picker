@@ -9,14 +9,14 @@ import {
   getProgramDescription,
   checkIsParking,
   stripTags,
-  isNil
+  isNil,
 } from "./utils";
 import { useExcludedDates } from "./utils/useExcludedDates";
 import { defaultSize } from "./ProgramSize";
 import { DateRangePick } from "./DateRangePick";
 import { DatePick } from "./DatePick";
 import { Input } from "./Input";
-import { EXTRA_DAY_PARK } from "./variables";
+import { getExtraDayParkValue } from "./variables";
 import { sendOrder } from "./sendOrder";
 
 import "./styles.css";
@@ -25,7 +25,7 @@ import { ProgramSizeImage } from "./ProgramSizeImage";
 
 registerLocale("cs", cs);
 setDefaultLocale("cs");
-
+const EXTRA_DAY_PARK = getExtraDayParkValue();
 const programData = getProgramData();
 const is_parking = checkIsParking(programData);
 
@@ -40,7 +40,7 @@ export default function App() {
   const [isSending, setIsSending] = useState(false);
   const [dateRange, setDateRange] = useState({
     startDate: null,
-    endDate: null
+    endDate: null,
   });
   const { excludedDatesStatus, excludedDates } = useExcludedDates();
   const pageEndRef = useRef(null);
@@ -56,7 +56,7 @@ export default function App() {
     const matchedProgram = getProgramFromDays(
       programData,
       days,
-      EXTRA_DAY_PARK
+      EXTRA_DAY_PARK,
     );
 
     setDateRange({ startDate, endDate });
@@ -111,7 +111,7 @@ export default function App() {
       vrp,
       productId: chosenProgram.id_service,
       size: programSize,
-      daysOver: chosenProgram.extraDays ?? 0
+      daysOver: chosenProgram.extraDays ?? 0,
     };
     sendOrder(data)
       .then((res) => {
@@ -143,7 +143,7 @@ export default function App() {
 
   const programDescription = useMemo(
     () => getProgramDescription(chosenProgram),
-    [chosenProgram]
+    [chosenProgram],
   );
 
   return isNil(programData) ? (

@@ -2,7 +2,13 @@ export const dateFormat = "d.M.yyyy";
 export const dateTimeFormat = "d.M.yyyy HH:mm";
 export const dateJsonFormat = "yyyy-MM-dd";
 export const sendDateFormat = "dd.MM.yyyy HH:mm";
-export const EXTRA_DAY_PARK = 200;
+export const EXTRA_DAY_PARK_fallback = 200;
+
+export const getExtraDayParkValue = () => {
+  return !isNil(window?.APP_DATA?.extraDayParkCost)
+    ? window.APP_DATA.extraDayParkCost
+    : EXTRA_DAY_PARK_fallback;
+};
 
 export const AVAILABLE_TIMES = [
   "00:30",
@@ -51,5 +57,5 @@ export const AVAILABLE_TIMES = [
   "22:00",
   "22:30",
   "23:00",
-  "23:30"
+  "23:30",
 ];
